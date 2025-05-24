@@ -137,7 +137,7 @@ class N6LMatrix {
 
     FromX3DOM(sf) {
         var str = sf.toString().replace(/\n/g , "");
-        var token = str.split(', ');
+        var token = str.split(' ');
         if(token.length != 16) return "Error";
         return new N6LMatrix([
             [Number(token[15]), Number(token[12]), Number(token[13]), Number(token[14])],
