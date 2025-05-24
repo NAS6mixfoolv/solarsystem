@@ -256,19 +256,14 @@ function viewp() {
   var selid = F1.VP.selectedIndex;
   var elm = document.getElementById('viewp000');
 
-// オプション1: runtimeからgetActiveViewpointNode()を試す
-    var currentViewpointNode = x3domRuntime.canvas.doc.getActiveViewpointNode(); // これが最も可能性が高い
+  //transform view vector and view point to local mirror space
+  //var viewMatInv = x3domRuntime.viewMatrix().inverse();
+  //var vPos = viewMatInv.multMatrixPnt(new x3dom.fields.SFVec3f(0, 0, 0));
 
-    // オプション2: runtimeからgetViewpoint()を試す (非推奨/古いAPIの可能性あり)
-    // var currentViewpointNode = x3domRuntime.canvas.doc.getViewpoint();
-
-    if (currentViewpointNode) {
-      var currentPosition = currentViewpoint.position;
-    var currentOrientation = currentViewpoint.orientation;
-//  var SWM = x3domRuntime.viewMatrix().inverse(); //ワールド回転行列取得
-//  var WM = new N6LMatrix().FromX3DOM(SWM);
-//  var Seye = SWM.multMatrixPnt(new x3dom.fields.SFVec3f(0, 0, 0)); //視点位置取得
-  var Seye = currentPosition; //視点位置取得
+  var SWM = x3domRuntime.viewMatrix().inverse(); //ワールド回転行列取得
+  var WM = new N6LMatrix().FromX3DOM(SWM);
+  var Seye = SWM.multMatrixPnt(new x3dom.fields.SFVec3f(0, 0, 0)); //視点位置取得
+//  var Seye = currentPosition; //視点位置取得
   var sp = new x3dom.fields.SFVec3f(mp[selid].x.x[1] / CNST_AU / Zoom, -mp[selid].x.x[0] / CNST_AU / Zoom, mp[selid].x.x[2] / CNST_AU / Zoom);
   var Sat = x3dom.fields.SFVec3f.copy(sp);
   var lookat = new N6LVector([1.0, Sat.x, Sat.y, Sat.z], true);
