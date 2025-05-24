@@ -256,9 +256,14 @@ function viewp() {
   var selid = F1.VP.selectedIndex;
   var elm = document.getElementById('viewp000');
 
-  var currentViewpoint = x3dom.Viewpoint.getCurrent(); // 現在のビューポイントを取得
-  if (currentViewpoint) {
-    var currentPosition = currentViewpoint.position;
+// オプション1: runtimeからgetActiveViewpointNode()を試す
+    var currentViewpointNode = x3domRuntime.canvas.doc.getActiveViewpointNode(); // これが最も可能性が高い
+
+    // オプション2: runtimeからgetViewpoint()を試す (非推奨/古いAPIの可能性あり)
+    // var currentViewpointNode = x3domRuntime.canvas.doc.getViewpoint();
+
+    if (currentViewpointNode) {
+      var currentPosition = currentViewpoint.position;
     var currentOrientation = currentViewpoint.orientation;
 //  var SWM = x3domRuntime.viewMatrix().inverse(); //ワールド回転行列取得
 //  var WM = new N6LMatrix().FromX3DOM(SWM);
