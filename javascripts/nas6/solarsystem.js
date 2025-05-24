@@ -274,8 +274,8 @@ function viewp() {
   elm.setAttribute('position', Seye.toString());
   elm.setAttribute('orientation', ori.toString());
   elm.setAttribute('centerOfRotation', sp.toString());
+  
   }
- 
 }
 
 //惑星初期化
