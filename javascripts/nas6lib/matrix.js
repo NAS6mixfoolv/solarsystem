@@ -185,17 +185,17 @@ class N6LMatrix {
     };
 
     From3JS(ary) {
-        if(ary.length != 16){
+        if(ary.elements.length != 16){
           if(N6L_DEBUG_MODE){
             console.warn("N6LMatrix.From3JS(ary): Invalid matrix dimensions(ary). Returning N6LMatrix(4).UnitMat().SetHomo(true)");
           }
           return new N6LMatrix(4).UnitMat().SetHomo(true);
         }
         return new N6LMatrix([
-            [Number(ary[15]), Number(ary[12]), Number(ary[13]), Number(ary[14])],
-            [Number(ary[3]), Number(ary[0]), Number(ary[1]), Number(ary[2])],
-            [Number(ary[7]), Number(ary[4]), Number(ary[5]), Number(ary[6])],
-            [Number(ary[11]), Number(ary[8]), Number(ary[9]), Number(ary[10])]]);
+            [Number(1), Number(ary.elements[12]), Number(ary.elements[13]), Number(ary.elements[14])],
+            [Number(1), Number(ary.elements[0]), Number(ary.elements[1]), Number(ary.elements[2])],
+            [Number(1), Number(ary.elements[4]), Number(ary.elements[5]), Number(ary.elements[6])],
+            [Number(1), Number(ary.elements[8]), Number(ary.elements[9]), Number(ary.elements[10])]]);
     };
 
     //行の取得
