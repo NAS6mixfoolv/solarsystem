@@ -14,6 +14,7 @@ This document provides detailed explanations of `solarsystem.htm`, its advanced 
 ---
   
 # solarsystem.htm  
+[Table of contents](#table-of-contents)  
   
 html  
 <script language="JavaScript" type="text/javascript" src="./javascripts/x3dom/jquery-2.1.4.min.js"></script><br>  
@@ -52,10 +53,12 @@ and the Runge-Kutta numerical integrator (rngkt.js). Finally, it includes solars
 and applies custom styling for the X3DOM canvas.  
   
 # solarsystem.js  
+[Table of contents](#table-of-contents)  
 This JavaScript file orchestrates the entire solar system simulation, handling user input, managing time,  
 performing orbital calculations (both Keplerian and relativistic), and updating the 3D visualization via X3DOM.  
   
 # Global Variable Declarations  
+[Table of contents](#table-of-contents)  
 This section defines the core variables and objects accessible throughout the solarsystem.js script.  
 These are crucial for managing the simulation's state, data, and interactions.  
   
@@ -91,6 +94,7 @@ Boolean variables that manage the simulation's operational state, including whet
 This is fundamental for accurately calculating the positions and velocities of celestial bodies over time, particularly when considering relativistic effects.  
 
 # Core Simulation Functions
+[Table of contents](#table-of-contents)  
 
 # init(b) Function  
 This function serves as the primary initialization point for the simulation.  
