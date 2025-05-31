@@ -2,6 +2,8 @@
 An interactive web-based solar system simulation that allows users to explore celestial mechanics  
 with customizable time settings, speed, scale, and observational focus, offering a choice  
 between Keplerian and relativistic Runge-Kutta calculations. 
+The solarsystem package is a tool that simulates the orbits of planets in the solar system based  
+on the N-body problem and provides 3D visualization.  
   
 LIB:  
 https://github.com/NAS6mixfoolv/NAS6LIB  
