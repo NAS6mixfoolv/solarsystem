@@ -4,6 +4,15 @@ This document provides detailed explanations of `solarsystem.htm`, its advanced 
   
 ---  
   
+  
+### Table of contents  
+* [solarsystem.htm](#solarsystemhtm)  
+* [solarsystem.js](#solarsystemjs)  
+  * [Global Variable Declarations](#global-variable-declarations)  
+  * [Core Simulation Functions](#core-simulation-functions)  
+  
+---
+  
 # solarsystem.htm  
   
 html  
