@@ -11,6 +11,8 @@ This document provides detailed explanations of `solarsystem.htm`, its advanced 
   * [Global Variable Declarations](#global-variable-declarations)  
   * [Core Simulation Functions](#core-simulation-functions)  
   
+[Back to NAS6LIB Repository](https://github.com/NAS6mixfoolv/NAS6LIB/)  
+
 ---
   
 # solarsystem.htm  
