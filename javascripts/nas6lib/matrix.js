@@ -552,6 +552,25 @@ class N6LMatrix {
                 if(ret.x[i].EpsEqual(ret.x[i].ZeroVec())) ret.x[i] = ret.x[i].UnitVec(i);
             }
         }
+        if(this.bHomo && ret.x.length == 4) {
+          var az = ret.GetRow(3);
+          var ay = ret.GetRow(2);
+          var ax = az.Cross(ay).NormalVec();
+          ay = az.Cross(ax).NormalVec();
+          ret.SetRow(1,ax);
+          ret.SetRow(2,ay);
+          ret.SetRow(3,az);
+        }
+        else {
+          var az = ret.GetRow(2);
+          var ay = ret.GetRow(1);
+          var ax = az.Cross(ay).NormalVec();
+          ay = az.Cross(ax).NormalVec();
+          ret.SetRow(0,ax);
+          ret.SetRow(1,ay);
+          ret.SetRow(2,az);
+        }
+
         //ret = ret.TransposedMat();
         return ret;
     };
