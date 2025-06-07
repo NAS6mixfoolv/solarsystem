@@ -100,45 +100,49 @@ class N6LQuaternion {
 
     //four arithmetic operations(contain convenience)//四則演算(便宜上も含む)
     Add(rh) {
+        var ret;
         var IntWK = 0;
-        var QuatWK = new N6LQuaternion(this);
+        var QuatWK = new N6LQuaternion(this).NormalQuat();
         if(rh && rh.typename == "N6LQuaternion"){
-            ret = new N6LVector(this);
-            for(IntWK = 0; IntWK < 4; IntWK++) QuatWK.q.x[IntWK] = this.q.x[IntWK] + rh.q.x[IntWK];
+            ret = new N6LQuaternion(rh).NormalQuat();
+            for(IntWK = 0; IntWK < 4; IntWK++) QuatWK.q.x[IntWK] = QuatWK.q.x[IntWK] + ret.q.x[IntWK];
         }
         else if(typeof(rh) == "number") {
             QuatWK.q = QuatWK.q.Add(rh);
         }
-        return QuatWK;
+        return QuatWK.NormalQuat();
     };
 
     Sub(rh) {
+        var ret;
         var IntWK = 0;
-        var QuatWK = new N6LQuaternion(this);
+        var QuatWK = new N6LQuaternion(this).NormalQuat();
         if(rh && rh.typename == "N6LQuaternion"){
-            ret = new N6LVector(this);
-            for(IntWK = 0; IntWK < 4; IntWK++) QuatWK.q.x[IntWK] = this.q.x[IntWK] - rh.q.x[IntWK];
+            ret = new N6LQuaternion(rh).NormalQuat();
+            for(IntWK = 0; IntWK < 4; IntWK++) QuatWK.q.x[IntWK] = QuatWK.q.x[IntWK] - ret.q.x[IntWK];
         }
         else if(typeof(rh) == "number") {
             QuatWK.q = QuatWK.q.Sub(rh);
         }
-        return QuatWK;
+        return QuatWK.NormalQuat();
     };
 
     Mul(rh) {
         var IntWK = 0;
         var QuatWK = new N6LQuaternion(this);
         if(rh && rh.typename == "N6LQuaternion"){
+            var l = new N6LQuaternion(this).NormalQuat();
+            var r = new N6LQuaternion(rh).NormalQuat();
             QuatWK = new N6LQuaternion(
-                this.q.x[0] * rh.q.x[0] - this.q.x[1] * rh.q.x[1] - this.q.x[2] * rh.q.x[2] - this.q.x[3] * rh.q.x[3],
-                this.q.x[0] * rh.q.x[1] + this.q.x[1] * rh.q.x[0] + this.q.x[2] * rh.q.x[3] - this.q.x[3] * rh.q.x[2],
-                this.q.x[0] * rh.q.x[2] - this.q.x[1] * rh.q.x[3] + this.q.x[2] * rh.q.x[0] + this.q.x[3] * rh.q.x[1],
-                this.q.x[0] * rh.q.x[3] + this.q.x[1] * rh.q.x[2] - this.q.x[2] * rh.q.x[1] + this.q.x[3] * rh.q.x[0]);
+                l.q.x[0] * r.q.x[0] - l.q.x[1] * r.q.x[1] - l.q.x[2] * r.q.x[2] - l.q.x[3] * r.q.x[3],
+                l.q.x[0] * r.q.x[1] + l.q.x[1] * r.q.x[0] + l.q.x[2] * r.q.x[3] - l.q.x[3] * r.q.x[2],
+                l.q.x[0] * r.q.x[2] - l.q.x[1] * r.q.x[3] + l.q.x[2] * r.q.x[0] + l.q.x[3] * r.q.x[1],
+                l.q.x[0] * r.q.x[3] + l.q.x[1] * r.q.x[2] - l.q.x[2] * r.q.x[1] + l.q.x[3] * r.q.x[0]);
         }
         else if(typeof(rh) == "number") {
             QuatWK.q = QuatWK.q.Mul(rh);
         }
-        return QuatWK;
+        return QuatWK.NormalQuat();
     };
 
     Div(rh) {
@@ -146,7 +150,7 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.Div(rh): Invalid rh.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var IntWK = 0;
         var QuatWK = new N6LQuaternion(this);
@@ -210,7 +214,7 @@ class N6LQuaternion {
     //normalize//ノーマライズ
     NormalQuat() {
         var wk = this.Repair().Abs();
-        if(wk == 0.0) return this;
+        if(wk == 0.0) return new N6LQuaternion(this);
         return this.Div(wk);
     };
 
@@ -220,12 +224,31 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.Dot(rh): Invalid rh.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var ret = 0.0;
+        var l = new N6LQuaternion(this).NormalQuat();
+        var r = new N6LQuaternion(rh).NormalQuat();
         var i;
-        for(i = 0; i < 4; i++) ret += this.q.x[i] * rh.q.x[i];
+        for(i = 1; i < 4; i++) ret += l.q.x[i] * r.q.x[i];
         return ret;
+    };
+
+    //cross//外積
+    Cross(rh) {
+        if(!rh || rh.typename != "N6LQuaternion"){
+          if(N6L_DEBUG_MODE){
+            console.warn("N6LQuaternion.Cross(rh): Invalid rh.typename. Returning this.");
+          }
+          return new N6LQuaternion(this);
+        }
+        var l = new N6LQuaternion(this).NormalQuat();
+        var r = new N6LQuaternion(rh).NormalQuat();
+        var ret = new N6LVector([0,
+        l.x[1] * r.x[2] - l.x[2] * r.x[1],
+        l.x[2] * r.x[0] - l.x[0] * r.x[2],
+        l.x[0] * r.x[1] - l.x[1] * r.x[0]]);
+        return ret.NormalQuat();
     };
 
     //rotate axis//軸に対する回転
@@ -234,7 +257,7 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.RotAxisQuat(axis, theta): Invalid axis.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var IntWK = 0;
         var QuatWK = new N6LQuaternion();
@@ -242,7 +265,7 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.RotAxisQuat(axis, theta): Invalid axis dimensions. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var VecWK = new N6LVector(axis).NormalVec();
         if(!VecWK.bHomo) VecWK = VecWK.ToHomo();
@@ -257,7 +280,7 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.RotAxisVec(rotvec): Invalid rotvec.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var IntWK = 0;
         var axis = new N6LVector([1.0, rotvec.x[1], rotvec.x[2], rotvec.x[3]], true).NormalVec();
@@ -314,7 +337,7 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.Lerp(q, t): Invalid q.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var QuatWK = new N6LQuaternion();
         var i;
@@ -328,7 +351,7 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.Lerp(q, t): Invalid q.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
         var QuatWK = new N6LQuaternion();
         var d = this.Dot(q);
@@ -370,13 +393,14 @@ class N6LQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LQuaternion.Lerp(q, t): Invalid q.typename. Returning this.");
           }
-          return this;
+          return new N6LQuaternion(this);
         }
-        var QuatWK = new N6LQuaternion();
-        var d = this.Dot(q);
+        var QuatWK = new N6LQuaternion(this).NormalQuat();
+        var QuatWK2 = new N6LQuaternion(q).NormalQuat();
+        var d = QuatWK.Dot(QuatWK2);
         var s = Math.sqrt(1.0 - d * d);
         if(!s) s = 1.0;
-        QuatWK = this.Mul(s * (1.0 - t) / s).Add(q.Mul((s * t) / s));
+        QuatWK = QuatWK.Mul(s * (1.0 - t) / s).Add(QuatWK2.Mul((s * t) / s));
         return QuatWK.NormalQuat().Repair();
     };
 
@@ -487,7 +511,7 @@ class N6LLnQuaternion {
         if(N6L_DEBUG_MODE){
           console.warn("N6LLnQuaternion.Add(rh): Invalid rh.typename. Returning this.");
         }
-        return this;
+        return new N6LLnQuaternion(this);
     };
 
     Sub(rh) {
@@ -500,7 +524,7 @@ class N6LLnQuaternion {
         if(N6L_DEBUG_MODE){
           console.warn("N6LLnQuaternion.Sub(rh): Invalid rh.typename. Returning this.");
         }
-        return this;
+        return new N6LLnQuaternion(this);
     };
 
     Mul(rh) {
@@ -508,7 +532,7 @@ class N6LLnQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LLnQuaternion.Mul(rh): Invalid rh.typename. Returning this.");
           }
-          return this;
+          return new N6LLnQuaternion(this);
         }
         var IntWK = 0;
         var QuatWK = new N6LLnQuaternion(0, 0, 0);
@@ -521,7 +545,7 @@ class N6LLnQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LLnQuaternion.Div(rh): Invalid rh.typename. Returning this.");
           }
-          return this;
+          return new N6LLnQuaternion(this);
         }
         var IntWK = 0;
         var QuatWK = new N6LLnQuaternion(0, 0, 0);
@@ -572,13 +596,13 @@ class N6LLnQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LLnQuaternion.RotAxisLnQuat(axis, theta): Invalid axis.typename. Returning this.");
           }
-          return this;
+          return new N6LLnQuaternion(this);
         }
         if(axis.x.length != 3 && axis.x.length != 4) {
           if(N6L_DEBUG_MODE){
             console.warn("N6LLnQuaternion.RotAxisLnQuat(axis, theta): Invalid vector dimension. Returning this.");
           }
-          return this;
+          return new N6LLnQuaternion(this);
         }
         var VecWK = new N6LVector(axis).NormalVec();
         if(!VecWK.bHomo) VecWK = VecWK.ToHomo();
@@ -609,7 +633,7 @@ class N6LLnQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LLnQuaternion.Lerp(q, t): Invalid q t typename. Returning this.");
           }
-          return this;
+          return new N6LLnQuaternion(this);
         }
         var LnQuatWK = this.Mul(1.0 - t).Add(q.Mul(t));
         var axis = new Array();
@@ -626,7 +650,7 @@ class N6LLnQuaternion {
           if(N6L_DEBUG_MODE){
             console.warn("N6LLnQuaternion.Lerp2(d0, q, d): q d not array. Returning this.");
           }
-          return this;
+          return new N6LLnQuaternion(this);
         }
         var IntWK = 0;
         var LnQuatWK = this.Mul(d0);
