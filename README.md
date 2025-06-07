@@ -7,6 +7,8 @@ on the N-body problem and provides 3D visualization.
   
 LIB:  
 https://github.com/NAS6mixfoolv/NAS6LIB  
+WIKI:  
+https://github.com/NAS6mixfoolv/NAS6LIB/wiki/Physics-Simulations-(Kepler-&-Runge%E2%80%90Kutta)
 DEMO:  
 https://nas6mixfoolv.github.io/NAS6LIB/  
 https://nas6mixfoolv.github.io/solarsystem/  
